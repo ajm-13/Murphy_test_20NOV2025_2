@@ -2,14 +2,14 @@
 title: "QMD_File_Test"
 format: pdf
 author: Aidan Murphy
-date: 11/20/25
+date: 2025-11-20
 
 execute:
   echo: true
 
 ---
 
-#1 Armed Forces Data Wrangling Redux
+##1 Armed Forces Data Wrangling Redux
 Frequency Table based on Subset of Soliders
 # Load Packages
 ```{r}
@@ -35,6 +35,7 @@ sheet_url <- "https://docs.google.com/spreadsheets/d/19xQnI1cBh6Jkw7eP8YQuuicMlV
 
 # Load the Sheet & build headers
 
+```{r}
 raw <- readr::read_csv(sheet_url, col_names = FALSE, show_col_types = FALSE)
 if (ncol(raw) < 2) raw <- readr::read_delim(sheet_url, delim = ",", col_names = FALSE, show_crow1 <- as.character(unlist(raw[1, ]))
 row2 <- as.character(unlist(raw[2, ]))
@@ -50,6 +51,7 @@ suf <- ave(seq_along(nm), nm, FUN = seq_along)
 nm <- ifelse(suf == 1, nm, paste0(nm, "_", suf))
 df <- as.data.frame(raw[-c(1,2), ], stringsAsFactors = FALSE)
 names(df) <- nm
+```
 
 # Begin Tidy data format
 
@@ -90,6 +92,7 @@ select(branch, sex, pay_grade, n)
 
 # Scrape rank titles
 
+```{r}
 ranks_raw <- read_html(ranks_url) %>%
 html_elements("table") %>%
 html_table(fill = TRUE) %>%
@@ -117,12 +120,14 @@ rank_title = na_if(stringr::str_squish(rank_title), "")
 ) %>%
 filter(!is.na(branch), !is.na(rank_title)) %>%
 select(pay_grade, branch, rank_title)
-
+```
 # Join groups
 
+```{r}
 df_groups <- groups %>%
 left_join(ranks, by = c("pay_grade","branch")) %>%
 relocate(rank_title, .after = pay_grade)
+```
 
 # Build individuals table
 ```{r}
@@ -135,8 +140,9 @@ geom_bar(fill = "red", color = "white") +
 labs(x = "Branch", y = "Count")
 ```
 
-#2 Popularity of Baby Names
+##2 Popularity of Baby Names
 
+```{r}
 library(tidyverse)
 library(dcData)
 
@@ -161,11 +167,13 @@ legend.position = "top",
 plot.title = element_text(face = "bold"),
 strip.text = element_text(face = "bold")
 )
+```
 
-#3 Plotting a Mathematical Function
+##3 Plotting a Mathematical Function
 R Code to Solve the Volume of a Box
 Volume Box Plot
 
+```{r}
 volume_fn <- function(L = 36, W = 48) {
 function(h) (L - 2*h) * (W - 2*h) * h
 }
@@ -184,8 +192,9 @@ ggplot(data.frame(x = c(0, min(L, W)/2)), aes(x = x)) +
 stat_function(fun = Vh, n = 1000) +
 geom_point(aes(x = res$Max_height, y = res$Max_volume)) +
 labs(x = "h", y = "V(h)", title = "Box Volume vs. Cut Height")
+```
 
-#4 What I’ve Learned in This Class
+##4 What I’ve Learned in This Class
 I’ve learned to use not only basic R functions but also how to leverage existing R packages to
 make processes easier and more effective. Moreover, I’ve learned some of the best practices for
 creating visualizations, whether it be histograms, boxplots, or scatter plots. Also, I’ve learned
