@@ -1,7 +1,12 @@
 ---
 title: "QMD_File_Test"
-format: html
-editor: visual
+format: pdf
+author: Aidan Murphy
+date: 11/20/25
+
+execute:
+  echo: true
+
 ---
 
 ## Quarto
