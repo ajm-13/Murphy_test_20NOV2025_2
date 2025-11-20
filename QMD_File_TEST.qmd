@@ -16,6 +16,8 @@ Frequency Table based on Subset of Soliders
 #| label: armed-load-packages
 #| echo: true
 
+# Coding style: Following the tidyverse style (https://tidyverse.org)
+
 library(tidyverse)
 library(rvest)
 library(ggplot2)
