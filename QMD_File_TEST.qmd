@@ -12,12 +12,24 @@ execute:
 #1 Armed Forces Data Wrangling Redux
 Frequency Table based on Subset of Soliders
 # Load Packages
+```{r}
+#| label: armed-load-packages
+#| echo: true
+
 library(tidyverse)
 library(rvest)
+library(ggplot2)
+```
 
 # Load Data sources
 
+```{r}
+#| label: armed-load-data
+#| echo: true
+#| warning: false
+
 sheet_url <- "https://docs.google.com/spreadsheets/d/19xQnI1cBh6Jkw7eP8YQuuicMlVDF7Gr-nXCb5qbranks_url <- "https://neilhatfield.github.io/Stat184_PayGradeRanks.html"
+```
 
 # Load the Sheet & build headers
 
@@ -38,6 +50,10 @@ df <- as.data.frame(raw[-c(1,2), ], stringsAsFactors = FALSE)
 names(df) <- nm
 
 # Begin Tidy data format
+
+```{r}
+#| label: armed-groups-table
+#| echo: true
 
 groups <- df %>%
 filter(!str_detect(pay_grade, regex("^Total", ignore_case = TRUE))) %>%
@@ -68,6 +84,7 @@ readr::parse_number(n_raw, na = c("Male","Female","Total","—","-",""))
 filter(!is.na(branch), !is.na(n), n > 0) %>%
 mutate(n = as.integer(n)) %>%
 select(branch, sex, pay_grade, n)
+```
 
 # Scrape rank titles
 
@@ -106,12 +123,15 @@ left_join(ranks, by = c("pay_grade","branch")) %>%
 relocate(rank_title, .after = pay_grade)
 
 # Build individuals table
+```{r}
+#| label: armed-branch-barplot
+#| echo: true
 
 df_individuals <- df_groups %>% uncount(n, .remove = TRUE)
-library(ggplot2)
 ggplot(df_individuals, aes(x = factor(branch))) +
 geom_bar(fill = "red", color = "white") +
 labs(x = "Branch", y = "Count")
+```
 
 #2 Popularity of Baby Names
 
